@@ -11,11 +11,13 @@ import com.bumptech.glide.Glide
 
 import com.example.newsapiapp.R
 import kotlinx.android.synthetic.main.fragment_article_details.view.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class ArticleDetailsFragment : Fragment() {
 
     private lateinit var rootView: View
     private val safeArgs: ArticleDetailsFragmentArgs by navArgs()
+    private val homeViewModel: HomeViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +37,9 @@ class ArticleDetailsFragment : Fragment() {
             author.text = article.author
             publicationDate.text = article.publishedAt
             content.text = article.content
+            markBtn.setOnClickListener {
+                homeViewModel.markArticle(article)
+            }
         }
     }
 

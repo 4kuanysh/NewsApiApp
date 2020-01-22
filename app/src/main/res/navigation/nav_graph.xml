@@ -17,6 +17,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_myListFragment"
+            app:destination="@id/myListFragment" />
     </fragment>
     <fragment
         android:id="@+id/articleDetailsFragment"
@@ -27,4 +30,9 @@
             android:name="article"
             app:argType="com.example.newsapiapp.data.models.NewsResponse$Article" />
     </fragment>
+    <fragment
+        android:id="@+id/myListFragment"
+        android:name="com.example.newsapiapp.ui.screens.MyListFragment"
+        android:label="fragment_my_list"
+        tools:layout="@layout/fragment_my_list" />
 </navigation>

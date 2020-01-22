@@ -3,8 +3,10 @@ package com.example.newsapiapp.ui.screens
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.newsapiapp.data.models.NetworkState
+import com.example.newsapiapp.data.models.NewsResponse
 import com.example.newsapiapp.data.repositories.ArticleRepository
 import com.google.gson.annotations.Until
+import kotlinx.coroutines.launch
 import java.util.*
 
 class HomeViewModel(private val repository: ArticleRepository): ViewModel() {
@@ -51,6 +53,12 @@ class HomeViewModel(private val repository: ArticleRepository): ViewModel() {
             }
         }
         timer.schedule(timerTask, 0, 5000L)
+    }
+
+    fun markArticle(article: NewsResponse.Article) {
+        viewModelScope.launch {
+            repository.insertMyArticle(article.title)
+        }
     }
 
     override fun onCleared() {

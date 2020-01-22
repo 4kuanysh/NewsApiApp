@@ -5,4 +5,5 @@
     <string name="text_top_headlines">TopHeadlines</string>
     <string name="text_everything">Everything</string>
     <string name="text_author">Author:</string>
+    <string name="text_add_to_read_later">Add to read later</string>
 </resources>

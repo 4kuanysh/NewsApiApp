@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 
 import com.example.newsapiapp.R
+import com.example.newsapiapp.ui.MainActivity
 import com.example.newsapiapp.ui.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -19,6 +21,7 @@ class HomeFragment : Fragment() {
     private val viewPagerAdapter by lazy { ViewPagerAdapter(childFragmentManager) }
     private lateinit var rootView: View
     private val homeViewModel: HomeViewModel by sharedViewModel()
+    private val navController by lazy {  Navigation.findNavController( (activity as MainActivity).findViewById(R.id.nav_fragment) ) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,11 @@ class HomeFragment : Fragment() {
             //init viewpager
             viewPager.adapter = viewPagerAdapter
             tabLayout.setupWithViewPager(viewPager)
+
+            myListFab.setOnClickListener {
+                val action = HomeFragmentDirections.actionHomeFragmentToMyListFragment()
+                navController.navigate(action)
+            }
         }
     }
 

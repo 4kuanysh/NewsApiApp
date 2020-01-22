@@ -5,6 +5,7 @@ import com.example.newsapiapp.data.database.AppDatabase
 import com.example.newsapiapp.data.database.dao.ArticleDao
 import com.example.newsapiapp.data.repositories.ArticleRepositoryImpl
 import com.example.newsapiapp.ui.screens.HomeViewModel
+import com.example.newsapiapp.ui.screens.MyListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -23,4 +24,5 @@ val repoModule = module {
 
 val viewModelModule = module {
     viewModel { HomeViewModel(get() as ArticleRepositoryImpl) }
+    viewModel { MyListViewModel(get() as ArticleRepositoryImpl) }
 }

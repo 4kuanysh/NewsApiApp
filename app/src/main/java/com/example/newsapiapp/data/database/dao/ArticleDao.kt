@@ -2,6 +2,7 @@ package com.example.newsapiapp.data.database.dao
 
 import androidx.paging.DataSource
 import androidx.room.*
+import com.example.newsapiapp.data.models.Mark
 import com.example.newsapiapp.data.models.NewsResponse
 
 @Dao
@@ -18,5 +19,15 @@ interface ArticleDao {
 
     @Query("DELETE FROM Article WHERE Article.type == :articleType")
     suspend fun deleteArticles(articleType: String)
+
+    @Insert
+    suspend fun insertMark(mark: Mark)
+
+    @Query("SELECT * FROM Article, Mark WHERE Article.title == Mark.title")
+    fun getMyArticles(): DataSource.Factory<Int, NewsResponse.Article>
+
+    //Test
+    @Query("SELECT * FROM  Mark")
+    fun getAllMarks(): List<Mark>
 
 }
