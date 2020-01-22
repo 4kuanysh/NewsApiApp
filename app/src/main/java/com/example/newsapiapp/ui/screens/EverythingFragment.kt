@@ -8,12 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.newsapiapp.R
-import com.example.newsapiapp.data.models.NewsResponse
+import com.example.newsapiapp.data.models.Status
 import com.example.newsapiapp.ui.adapters.ArticleAdapter
 import kotlinx.android.synthetic.main.fragment_everything.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -41,6 +40,10 @@ class EverythingFragment : Fragment() {
             rvEverything.layoutManager = LinearLayoutManager(context)
             rvEverything.adapter = articleAdapter
 
+            swipeRefresh.setOnRefreshListener {
+                Log.d("taaag", "swipeRefresh.setOnRefreshListener()")
+                homeViewModel.refresh()
+            }
 
         }
     }
@@ -53,6 +56,13 @@ class EverythingFragment : Fragment() {
             Log.d("taaag", "observer, ${it?.map { a -> a?.title?.subSequence(1..10) }}")
             Log.d("taaag", "------------------------------------")
             articleAdapter.submitList(it) })
+
+        homeViewModel.refreshState.observe(viewLifecycleOwner, Observer {
+            Log.d("taaag", "refreshState: ${it.status}")
+            if (it.status == Status.SUCCESS) {
+                rootView.swipeRefresh.isRefreshing = false
+            }
+        })
     }
 
 

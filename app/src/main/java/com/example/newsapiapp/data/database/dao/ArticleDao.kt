@@ -8,15 +8,15 @@ import com.example.newsapiapp.data.models.NewsResponse
 interface ArticleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertArticle(article: NewsResponse.Article)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArticles(articles: List<NewsResponse.Article>)
 
     @Query("SELECT * FROM Article")
     fun getArticles(): DataSource.Factory<Int, NewsResponse.Article>
 
-    @Delete
-    suspend fun deleteArticle(article: NewsResponse.Article)
+    @Query("SELECT * FROM Article WHERE Article.type == :articleType")
+    fun getArticlesByType(articleType: String): DataSource.Factory<Int, NewsResponse.Article>
+
+    @Query("DELETE FROM Article")
+    suspend fun deleteArticles()
 
 }

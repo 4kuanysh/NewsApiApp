@@ -1,9 +1,8 @@
 package com.example.newsapiapp.data.models
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 
+enum class ArticleType { EVERYTHING, TOP_HEADLINE }
 
 data class NewsResponse(
     @SerializedName("articles")
@@ -37,6 +36,8 @@ data class NewsResponse(
         @ColumnInfo(name = "urlToImage")
         val urlToImage: String?,
         @ColumnInfo(name = "page")
-        var page: Int
+        var page: Int,
+        @ColumnInfo(name = "type")
+        var type: String
     )
 }

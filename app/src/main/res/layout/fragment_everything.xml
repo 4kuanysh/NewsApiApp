@@ -5,12 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.screens.EverythingFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvEverything"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fadeScrollbars="false"
-        android:overScrollMode="ifContentScrolls"
-        />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEverything"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </FrameLayout>

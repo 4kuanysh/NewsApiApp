@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.newsapiapp.R
 import com.example.newsapiapp.data.models.NewsResponse
 import kotlinx.android.synthetic.main.rv_item_article.view.*
@@ -20,10 +21,12 @@ class ArticleAdapter: PagedListAdapter<NewsResponse.Article, ArticleAdapter.Arti
     }
 
     inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val glide = Glide.with(itemView.context)
         fun bindView(item: NewsResponse.Article?) {
             with(itemView) {
                 title.text = item?.title
                 description.text = item?.description
+                glide.load(item?.urlToImage).into(image)
             }
         }
     }

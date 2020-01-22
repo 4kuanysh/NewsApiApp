@@ -1,21 +1,22 @@
 package com.example.newsapiapp.data.repositories
 
-import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.Config
-import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.example.newsapiapp.data.database.dao.ArticleDao
-import com.example.newsapiapp.data.models.NewsResponse
+import com.example.newsapiapp.data.models.*
+import com.example.newsapiapp.data.network.RetrofitBuilder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.concurrent.Executor
 
 class ArticleRepositoryImpl(private val articleDao: ArticleDao, private val executor: Executor): ArticleRepository {
 
-    override fun getEverything(query: String, pageSize: Int, scope: CoroutineScope): LiveData<PagedList<NewsResponse.Article>> {
-        val sourceFactory =  PagedKeyedArticleDataSource.ArticleDataSourceFactory(query, scope)
+    override fun getEverything(query: String, pageSize: Int, scope: CoroutineScope): Listing<NewsResponse.Article> {
 
-        val boundaryCallback = NewsBoundaryCallback(articleDao, executor, 20, query, scope)
+        val boundaryCallback = EverythingNewsBoundaryCallback(articleDao, executor, 20, query, scope)
         val liveData = articleDao.getArticles().toLiveData(
             config = Config(
             pageSize = pageSize,
@@ -23,13 +24,31 @@ class ArticleRepositoryImpl(private val articleDao: ArticleDao, private val exec
             ),
             boundaryCallback = boundaryCallback
         )
-        Log.d("taaag", "Articles From Local: ${liveData.value }")
 
-        val livePagedList = sourceFactory.toLiveData(
-            pageSize = pageSize,
-            fetchExecutor = executor)
+        val refresh : (scope: CoroutineScope) -> LiveData<NetworkState> = {
+            val networkState = MutableLiveData<NetworkState>()
+            networkState.value = NetworkState.LOADING
+            it.launch {
+                try {
+                    val response = RetrofitBuilder.newsService.getEverything(query, 1, pageSize)
+                    response.articles.forEach { art -> art.page = 1; art.type = ArticleType.EVERYTHING.name }
+                    articleDao.deleteArticles()
+                    articleDao.insertArticles(response.articles)
+                    networkState.value = NetworkState.LOADED
+                } catch (e : Exception) {
+                    networkState.value = NetworkState.error(e.message)
+                }
+            }
+            networkState
+        }
 
-        return liveData
+
+        return Listing(
+            pagedList = liveData,
+            refresh = {
+                refresh(scope)
+            }
+        )
     }
 
 }
