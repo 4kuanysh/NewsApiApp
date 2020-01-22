@@ -10,12 +10,17 @@ import android.view.ViewGroup
 import com.example.newsapiapp.R
 import com.example.newsapiapp.ui.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment() {
 
     private val viewPagerAdapter by lazy { ViewPagerAdapter(childFragmentManager) }
     private lateinit var rootView: View
+    private val homeViewModel: HomeViewModel by sharedViewModel()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewPagerAdapter.addFragment(TopHeadlinesFragment.newInstance(), getString(R.string.text_top_headlines))
@@ -33,6 +38,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initUI() {
+        homeViewModel.setQuery("US")
+
         with(rootView) {
             //init viewpager
             viewPager.adapter = viewPagerAdapter

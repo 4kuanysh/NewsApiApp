@@ -16,7 +16,7 @@ interface ArticleDao {
     @Query("SELECT * FROM Article WHERE Article.type == :articleType")
     fun getArticlesByType(articleType: String): DataSource.Factory<Int, NewsResponse.Article>
 
-    @Query("DELETE FROM Article")
-    suspend fun deleteArticles()
+    @Query("DELETE FROM Article WHERE Article.type == :articleType")
+    suspend fun deleteArticles(articleType: String)
 
 }

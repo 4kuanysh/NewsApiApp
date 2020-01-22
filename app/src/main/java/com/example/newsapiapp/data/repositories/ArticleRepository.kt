@@ -7,4 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 
 interface ArticleRepository {
     fun getEverything(query: String, pageSize: Int, scope: CoroutineScope): Listing<NewsResponse.Article>
+    fun getTopHeadline(query: String, pageSize: Int, scope: CoroutineScope): Listing<NewsResponse.Article>
+
+
 }

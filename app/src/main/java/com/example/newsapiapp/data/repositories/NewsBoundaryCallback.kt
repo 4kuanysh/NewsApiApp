@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.concurrent.Executor
 
-class EverythingNewsBoundaryCallback(
+class NewsBoundaryCallback(
+    private val articleType: ArticleType,
     private val articleDao: ArticleDao,
     private val executor: Executor,
     private val networkPageSize: Int,
@@ -27,8 +28,11 @@ class EverythingNewsBoundaryCallback(
         halper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) { halperCallback ->
             scope.launch {
                 try {
-                    val response = RetrofitBuilder.newsService.getEverything(query, 1, networkPageSize)
-                    response.articles.forEach { it.page = 1; it.type = ArticleType.EVERYTHING.name }
+                    val response = when (articleType) {
+                        ArticleType.EVERYTHING -> RetrofitBuilder.newsService.getEverything(query, 1, networkPageSize)
+                        ArticleType.TOP_HEADLINE -> RetrofitBuilder.newsService.getTopHeadlines(query, 1, networkPageSize)
+                    }
+                    response.articles.forEach { it.page = 1; it.type = articleType.name }
                     Log.d("taaag", "onZeroItemsLoaded ${response.articles[0].page}")
                     articleDao.insertArticles(response.articles)
                     halperCallback.recordSuccess()
@@ -45,8 +49,11 @@ class EverythingNewsBoundaryCallback(
         halper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { halperCallback ->
             scope.launch {
                 try {
-                    val response = RetrofitBuilder.newsService.getEverything(query, itemAtEnd.page + 1, networkPageSize)
-                    response.articles.forEach { it.page = itemAtEnd.page + 1; it.type = ArticleType.EVERYTHING.name }
+                    val response = when (articleType) {
+                        ArticleType.EVERYTHING -> RetrofitBuilder.newsService.getEverything(query, itemAtEnd.page + 1, networkPageSize)
+                        ArticleType.TOP_HEADLINE -> RetrofitBuilder.newsService.getTopHeadlines(query, itemAtEnd.page + 1, networkPageSize)
+                    }
+                    response.articles.forEach { it.page = itemAtEnd.page + 1; it.type = articleType.name }
                     Log.d("taaag", "onItemAtEndLoaded ${itemAtEnd.page}")
                     Log.d("taaag", "onItemAtEndLoaded ${response.articles.map { it.page }}")
 

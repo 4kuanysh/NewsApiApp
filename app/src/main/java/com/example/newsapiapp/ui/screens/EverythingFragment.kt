@@ -15,13 +15,13 @@ import com.example.newsapiapp.R
 import com.example.newsapiapp.data.models.Status
 import com.example.newsapiapp.ui.adapters.ArticleAdapter
 import kotlinx.android.synthetic.main.fragment_everything.view.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class EverythingFragment : Fragment() {
 
     private lateinit var rootView: View
     private val articleAdapter by lazy { ArticleAdapter() }
-    private val homeViewModel: HomeViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,15 +34,13 @@ class EverythingFragment : Fragment() {
     }
 
     private fun initUI() {
-        homeViewModel.setQuery("chine")
-
         with(rootView) {
             rvEverything.layoutManager = LinearLayoutManager(context)
             rvEverything.adapter = articleAdapter
 
             swipeRefresh.setOnRefreshListener {
                 Log.d("taaag", "swipeRefresh.setOnRefreshListener()")
-                homeViewModel.refresh()
+                homeViewModel.refreshEverything()
             }
 
         }
@@ -50,15 +48,10 @@ class EverythingFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        homeViewModel.articles.observe(viewLifecycleOwner, Observer {
-            Log.d("taaag", "------------------------------------")
-            Log.d("taaag", "observer, ${it?.map { a -> a?.page }}")
-            Log.d("taaag", "observer, ${it?.map { a -> a?.title?.subSequence(1..10) }}")
-            Log.d("taaag", "------------------------------------")
+        homeViewModel.everythingArticles.observe(viewLifecycleOwner, Observer {
             articleAdapter.submitList(it) })
 
-        homeViewModel.refreshState.observe(viewLifecycleOwner, Observer {
-            Log.d("taaag", "refreshState: ${it.status}")
+        homeViewModel.refreshEverythingState.observe(viewLifecycleOwner, Observer {
             if (it.status == Status.SUCCESS) {
                 rootView.swipeRefresh.isRefreshing = false
             }
