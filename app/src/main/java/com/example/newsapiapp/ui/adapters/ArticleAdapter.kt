@@ -13,6 +13,12 @@ import kotlinx.android.synthetic.main.rv_item_article.view.*
 
 class ArticleAdapter: PagedListAdapter<NewsResponse.Article, ArticleAdapter.ArticleViewHolder>(ARTICLE_COMPARATOR) {
 
+    private var onArticleClickListener: ((NewsResponse.Article) -> Unit)? = null
+
+    fun setOnArticleClickListener(listener: (NewsResponse.Article) -> Unit) {
+        onArticleClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder =
         ArticleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rv_item_article, parent, false))
 
@@ -27,6 +33,9 @@ class ArticleAdapter: PagedListAdapter<NewsResponse.Article, ArticleAdapter.Arti
                 title.text = item?.title
                 description.text = item?.description
                 glide.load(item?.urlToImage).into(image)
+                this.setOnClickListener {
+                    item?.let { article -> onArticleClickListener?.invoke(article) }
+                }
             }
         }
     }

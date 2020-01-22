@@ -1,6 +1,8 @@
 package com.example.newsapiapp.data.models
+import android.os.Parcelable
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 enum class ArticleType { EVERYTHING, TOP_HEADLINE }
 
@@ -12,6 +14,7 @@ data class NewsResponse(
     @SerializedName("totalResults")
     val totalResults: Int
 ) {
+    @Parcelize
     @Entity(tableName = "Article")
     data class Article(
         @SerializedName("author")
@@ -39,5 +42,5 @@ data class NewsResponse(
         var page: Int,
         @ColumnInfo(name = "type")
         var type: String
-    )
+    ): Parcelable
 }

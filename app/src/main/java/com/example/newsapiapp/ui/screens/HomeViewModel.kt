@@ -1,21 +1,14 @@
 package com.example.newsapiapp.ui.screens
 
-import android.os.CountDownTimer
-import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.newsapiapp.data.models.NetworkState
-
 import com.example.newsapiapp.data.repositories.ArticleRepository
 import com.google.gson.annotations.Until
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class HomeViewModel(private val repository: ArticleRepository): ViewModel() {
 
-    private val handler = Handler()
 
     private val query = MutableLiveData<String>()
     private val listingEverything = Transformations.map(query) {
@@ -48,16 +41,21 @@ class HomeViewModel(private val repository: ArticleRepository): ViewModel() {
     }
 
 
+    private val timer = Timer()
 
     fun refreshTopHeadlines() {
-        val timer = Timer()
         val timerTask = object : TimerTask() {
             override fun run() {
                 Log.d("taaag", "refreshTopHeadlines()")
                 refreshTopHeadlinesTrigger.postValue(null)
             }
         }
-        timer.schedule(timerTask, 0, 5000L);
+        timer.schedule(timerTask, 0, 5000L)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timer.cancel()
     }
 
     fun setQuery(value: String) {
