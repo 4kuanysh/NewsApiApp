@@ -1,5 +1,7 @@
 # NewsApiApp
 
+APY KEY Обявлен в secrets.properties
+
 Paging libery, 
 Room, 
 Retrofit 2, 
