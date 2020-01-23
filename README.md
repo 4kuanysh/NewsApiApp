@@ -1,6 +1,6 @@
 # NewsApiApp
 
-APY KEY Обявлен в secrets.properties
+APY KEY Объявлен в secrets.properties
 
 Paging libery, 
 Room, 
