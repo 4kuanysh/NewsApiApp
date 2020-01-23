@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 
 import com.example.newsapiapp.R
+import com.example.newsapiapp.ui.screens.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_article_details.view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 

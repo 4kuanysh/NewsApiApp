@@ -1,4 +1,4 @@
-package com.example.newsapiapp.ui.screens
+package com.example.newsapiapp.ui.screens.home
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -39,7 +39,7 @@ class HomeViewModel(private val repository: ArticleRepository): ViewModel() {
 
     private val refreshTopHeadlinesTrigger = MutableLiveData<Until>()
     val refreshTopHeadlinesState: LiveData<NetworkState> = Transformations.switchMap(refreshTopHeadlinesTrigger) {
-        listingEverything.value?.refresh?.invoke()
+        listingTopHeadlines.value?.refresh?.invoke()
     }
 
 

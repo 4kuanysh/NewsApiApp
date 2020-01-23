@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.TopHeadlinesFragment">
+    tools:context=".ui.screens.home.TopHeadlinesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEverything"

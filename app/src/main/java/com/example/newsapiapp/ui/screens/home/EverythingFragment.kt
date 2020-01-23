@@ -1,4 +1,4 @@
-package com.example.newsapiapp.ui.screens
+package com.example.newsapiapp.ui.screens.home
 
 
 import android.os.Bundle
@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,7 +42,10 @@ class EverythingFragment : Fragment() {
             rvEverything.adapter = articleAdapter
 
             articleAdapter.setOnArticleClickListener {
-                val actionToArticleDetails = HomeFragmentDirections.actionHomeFragmentToArticleDetailsFragment(it)
+                val actionToArticleDetails =
+                    HomeFragmentDirections.actionHomeFragmentToArticleDetailsFragment(
+                        it
+                    )
                 navController.navigate(actionToArticleDetails)
             }
 
@@ -69,7 +71,8 @@ class EverythingFragment : Fragment() {
 
 
     companion object {
-        fun newInstance() = EverythingFragment()
+        fun newInstance() =
+            EverythingFragment()
     }
 
 }

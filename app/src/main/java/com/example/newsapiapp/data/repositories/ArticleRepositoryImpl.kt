@@ -36,7 +36,7 @@ class ArticleRepositoryImpl(private val articleDao: ArticleDao, private val exec
     }
 
     private fun getArticles(articleType: ArticleType, query: String, pageSize: Int, scope: CoroutineScope): Listing<NewsResponse.Article> {
-        val boundaryCallback = NewsBoundaryCallback(articleType, articleDao, executor, 20, query, scope)
+        val boundaryCallback = NewsBoundaryCallback(articleType, articleDao, executor, NETWORK_PAGE_SIZE, query, scope)
         val liveData = articleDao.getArticlesByType(articleType.name).toLiveData(
             config = Config(
                 pageSize = pageSize,
@@ -50,7 +50,15 @@ class ArticleRepositoryImpl(private val articleDao: ArticleDao, private val exec
             networkState.value = NetworkState.LOADING
             it.launch {
                 try {
-                    val response = RetrofitBuilder.newsService.getEverything(query, 1, pageSize)
+                    val response = when (articleType) {
+                        ArticleType.EVERYTHING -> RetrofitBuilder.newsService.getEverything(query, 1, NETWORK_PAGE_SIZE)
+                        ArticleType.TOP_HEADLINE -> RetrofitBuilder.newsService.getTopHeadlines(query, 1, NETWORK_PAGE_SIZE)
+                    }
+                    when (articleType) {
+                        ArticleType.EVERYTHING -> Log.d("taaag", "Refresh: EVERYTHING")
+                        ArticleType.TOP_HEADLINE -> Log.d("taaag", "Refresh: TOP_HEADLINE")
+
+                    }
                     response.articles.forEach { art -> art.page = 1; art.type = articleType.name }
                     articleDao.deleteArticles(articleType.name)
                     articleDao.insertArticles(response.articles)
@@ -69,6 +77,10 @@ class ArticleRepositoryImpl(private val articleDao: ArticleDao, private val exec
                 refresh(scope)
             }
         )
+    }
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 15
     }
 
 }

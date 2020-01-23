@@ -1,4 +1,4 @@
-package com.example.newsapiapp.ui.screens
+package com.example.newsapiapp.ui.screens.home
 
 
 import android.os.Bundle
@@ -15,7 +15,6 @@ import com.example.newsapiapp.ui.MainActivity
 import com.example.newsapiapp.ui.adapters.ArticleAdapter
 import kotlinx.android.synthetic.main.fragment_top_headlines.view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class TopHeadlinesFragment : Fragment() {
 
@@ -40,7 +39,10 @@ class TopHeadlinesFragment : Fragment() {
             rvEverything.adapter = articleAdapter
 
             articleAdapter.setOnArticleClickListener {
-                val actionToArticleDetails = HomeFragmentDirections.actionHomeFragmentToArticleDetailsFragment(it)
+                val actionToArticleDetails =
+                    HomeFragmentDirections.actionHomeFragmentToArticleDetailsFragment(
+                        it
+                    )
                 navController.navigate(actionToArticleDetails)
             }
 
@@ -61,7 +63,8 @@ class TopHeadlinesFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = TopHeadlinesFragment()
+        fun newInstance() =
+            TopHeadlinesFragment()
     }
 
 }

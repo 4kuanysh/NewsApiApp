@@ -1,4 +1,4 @@
-package com.example.newsapiapp.ui.screens
+package com.example.newsapiapp.ui.screens.my_list
 
 
 import android.os.Bundle

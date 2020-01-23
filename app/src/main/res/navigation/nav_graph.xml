@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.newsapiapp.ui.screens.HomeFragment"
+        android:name="com.example.newsapiapp.ui.screens.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/myListFragment"
-        android:name="com.example.newsapiapp.ui.screens.MyListFragment"
+        android:name="com.example.newsapiapp.ui.screens.my_list.MyListFragment"
         android:label="fragment_my_list"
         tools:layout="@layout/fragment_my_list" />
 </navigation>

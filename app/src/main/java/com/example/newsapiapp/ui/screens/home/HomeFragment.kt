@@ -1,4 +1,4 @@
-package com.example.newsapiapp.ui.screens
+package com.example.newsapiapp.ui.screens.home
 
 
 import android.os.Bundle
@@ -13,7 +13,6 @@ import com.example.newsapiapp.ui.MainActivity
 import com.example.newsapiapp.ui.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment() {
@@ -41,19 +40,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun initUI() {
-        homeViewModel.setQuery("US")
+        homeViewModel.setQuery(QUERY)
 
         with(rootView) {
             //init viewpager
             viewPager.adapter = viewPagerAdapter
             tabLayout.setupWithViewPager(viewPager)
 
+            //See my list of articles
             myListFab.setOnClickListener {
-                val action = HomeFragmentDirections.actionHomeFragmentToMyListFragment()
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToMyListFragment()
                 navController.navigate(action)
             }
         }
+
     }
 
+    companion object {
+        // Запрос по теме US
+        private const val QUERY = "US"
+    }
 
 }
